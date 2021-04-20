@@ -1,6 +1,6 @@
 # news-paper
 test
 
-/ npm run serve
+app/ npm run serve
 
 /localhost:8080
