@@ -1,20 +1,19 @@
 <template>
     <div class="comments__container">
-        <div 
+        <div  
             v-for="comment of comments"
-            :key="comment" 
+            :key="comment.id" 
             class="comments__list">
 
-            <div id="comment.id">
+            <div>
                 <strong>{{ comment.author.title }}</strong>
-                <p>{{ comment.description }}</p>
+                <p v-html="comment.description">  </p>
                 <small>{{ comment.createdAt }}</small>
                 <strong class="likes">likes: {{ comment.likes }}</strong>
                 <strong class="dislikes">dislikes: {{ comment.dislikes }}</strong>
                 <button @click="increaseTheLikes(comment)">like</button>
                 <button @click="increaseTheDislikes(comment)">dislike</button>
             </div>
-
         </div>
     </div>
 </template>
@@ -27,6 +26,7 @@ export default {
       return {
         comments: '',
         id: '',
+        desc: ''
       }
   },
 
