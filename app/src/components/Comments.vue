@@ -1,7 +1,20 @@
 <template>
     <div class="comments__container">
-        <div class="comments__list">
-            <!-- content -->
+        <div 
+            v-for="comment of comments"
+            :key="comment" 
+            class="comments__list">
+
+            <div id="comment.id">
+                <strong>{{ comment.author.title }}</strong>
+                <p>{{ comment.description }}</p>
+                <small>{{ comment.createdAt }}</small>
+                <strong class="likes">likes: {{ comment.likes }}</strong>
+                <strong class="dislikes">dislikes: {{ comment.dislikes }}</strong>
+                <button @click="increaseTheLikes(comment)">like</button>
+                <button @click="increaseTheDislikes(comment)">dislike</button>
+            </div>
+
         </div>
     </div>
 </template>
@@ -18,9 +31,17 @@ export default {
   },
 
     methods: {
+        increaseTheLikes(comment) {
+            comment.likes++;
+        },
+
+        increaseTheDislikes(comment) { 
+            comment.dislikes++; 
+        },
+
         storeComment() {
             for (const comArray of commentsData.commentsObject.data) {
-                 if(comArray.id == this.id) { 
+                 if (comArray.id == this.id) { 
                     commentsData.commentsObject.comments.push;
                 } 
             }
@@ -28,57 +49,12 @@ export default {
 
         setComments() {
             this.id = this.$router.params.curNews.id;
-
             for (const comArray of this.$router.params.comments) {
-                if(comArray.id == this.id) {
+                if (comArray.id == this.id) {
                     this.comments = comArray.comments;
                 }
-
             }
-            
-            for (let comment of this.comments) {
-                const div = document.createElement('div');
-                const likeButton = document.createElement('button');
-                likeButton.innerText = 'like';
-                likeButton.addEventListener('click', () => {
-                    comment.likes++;
-                    this.updateLikes(comment);
-                });
-
-                const dislikeButton = document.createElement('button');
-                dislikeButton.innerText = 'dislike';
-                dislikeButton.addEventListener('click', () => { 
-                    comment.dislikes++; 
-                    this.updateDislikes(comment);
-                });
-
-                div.id = comment.id;
-                div.innerHTML += `<strong>${comment.author.title}</strong>`;
-                div.innerHTML += `<p>${comment.description}</p>`;
-                div.innerHTML += `<small>${comment.createdAt}</small>`;
-                div.innerHTML += `<strong class="likes">likes: ${comment.likes}</strong>`;
-                div.innerHTML += `<strong class="dislikes">dislikes: ${comment.dislikes}</strong>`;
-                const list = document.querySelector('.comments__list');
-                div.appendChild(likeButton);
-                div.appendChild(dislikeButton);
-                list.appendChild(div);
-            }
-        },
-
-        updateLikes(comment) {
-            const commentElement = document.getElementById(comment.id);
-            const likesElement = commentElement.querySelector('.likes');
-            likesElement.innerText = `likes: ${comment.likes}`;
-            console.log(commentElement);
-        },
-
-        updateDislikes(comment) {
-            const commentElement = document.getElementById(comment.id);
-            const dislikesElement = commentElement.querySelector('.dislikes');
-            dislikesElement.innerText = `dislikes: ${comment.dislikes}`;
-            console.log(commentElement);
         }
-
     },
 
     mounted() {
@@ -91,10 +67,6 @@ export default {
 </script>
 
 <style> 
-/* .comment__container {
-    text-align: center;
-} */
-
 .comments__list strong {
     margin: 2px 5px;
 }
